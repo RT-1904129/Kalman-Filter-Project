@@ -1,2 +1,4 @@
 # Kalman-Filter-Project
-This is group Project of creating Kalman filter from Scratch
+CS331 Machine Learning Group Project 
+Theme: Kalman filter 
+Group ID: SaNiRiSnPr
