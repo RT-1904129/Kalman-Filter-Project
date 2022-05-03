@@ -31,15 +31,22 @@ def main():
         center = data[:,i,:]
         # Here we are creating frame
         frame = CreateImages(512,512)
+
         if (len(center) > 0):
+
             tracker.update(center)
+
             for j in range(len(tracker.tracks)):
+
                 if(len(tracker.tracks[j].trace) > 1):
+
                     x = int(tracker.tracks[j].trace[-1][0,0])
                     y = int(tracker.tracks[j].trace[-1][0,1])
+
                     rectangle_length = (x-10,y-10)
-                    color = track_colors[j]
                     rectangle_width = (x+10,y+10)
+                    color = track_colors[j]
+                    
                     
                     # it is used to create a rectangle box in image
                     # cv2.rectangle(image, start_point, end_point, color, thickness)
@@ -62,7 +69,7 @@ def main():
             # it is used to show frame which name is "Pictures" 
             cv2.imshow('Pictures ',frame)
             
-            time.sleep(0.1)
+            time.sleep(0.05)
 
             # It will destroy all windows if we press the key 3 or keyboard key s 
             if cv2.waitKey(3) & 0xFF == ord('s'):
