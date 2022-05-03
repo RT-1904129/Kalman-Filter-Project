@@ -4,14 +4,14 @@ import numpy as np
 # Defining a class for the KalmanFilter.
 class KalmanFilter(object):
 
-    def __init__(self, dt=1, var_X=1, var_Y=1, method="Velocity"):
+    def __init__(self, dT=1, var_X=1, var_Y=1, method="Velocity"):
 
         super(KalmanFilter, self).__init__()
 
         # Storing the parameters in the attributes of the class.
         self.var_X = var_X
         self.var_Y = var_Y
-        self.dt = dt
+        self.dT = dT
 
         # U represents the acceleration.
         self.U = 0
@@ -19,11 +19,11 @@ class KalmanFilter(object):
             self.U = 1
 
         #  X represents the State Matrix.
-        self.X = np.matrix([[0], [1], [0], [1]])
+        self.X = np.matrix([[1], [0], [1], [0]])
 
         # Matrix A represents the State transitions.
-        self.A = np.matrix([[1, self.dt, 0, 0], [0, 1, 0, 0],
-                            [0, 0, 1, self.dt],  [0, 0, 0, 1]])
+        self.A = np.matrix([[1, self.dT, 0, 0], [0, 1, 0, 0],
+                            [0, 0, 1, self.dT],  [0, 0, 0, 1]])
 
         #  P represents the Process Covariance Matrix.
         self.P = np.matrix(self.var_X * np.identity(self.A.shape[0]))
@@ -31,7 +31,7 @@ class KalmanFilter(object):
 
         # Matrix B applies acceleration (U) to provide values to update the position and velocity of AX.
         self.B = np.matrix(
-            [[self.dt**2/2], [self.dt], [self.dt**2/2], [self.dt]])
+            [[self.dT/2], [self.dT], [self.dT/2], [self.dT]])
 
         # Matrix H helps in transforming the matrix format of P into the format desired for the K matrix.
         self.H = np.matrix([[1, 0, 0, 0], [0, 0, 1, 0]])
@@ -41,10 +41,10 @@ class KalmanFilter(object):
                            np.identity(self.H.shape[0]))
 
         # Matrix Q represents the error terms.
-        self.Q = np.matrix([[self.dt**4/4, self.dt**3/2, 0, 0],
-                            [self.dt**3/2, self.dt**2, 0, 0],
-                            [0, 0, self.dt**4/4, self.dt**3/2],
-                            [0, 0, self.dt**3/2, self.dt**2]])
+        self.Q = np.matrix([[self.dT/4, self.dT/2, 0, 0],
+                            [self.dT/2, self.dT, 0, 0],
+                            [0, 0, self.dT/4, self.dT/2],
+                            [0, 0, self.dT/2, self.dT]])
 
     # Function which predicts the next state based on previous state.
     def predict(self):
